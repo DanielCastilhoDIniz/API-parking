@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+from flask import render_template, redirect, url_for, flash, abort
 import requests
 import json
 
@@ -34,34 +35,9 @@ def get_nearbay_places():
     dados = response.json()
 
     # Retorna os resultados em formato JSON
-    return jsonify(dados), 200
+    return render_template("home.html")
 
 
 if __name__ == '__main__':
     app.run(debug=True)
 
-# # consulta CEP e localização
-# cep = 58051200
-# mapas = requests.get(f'https://cep.awesomeapi.com.br/json/{cep}')
-# endereco_dic = mapas.json()
-
-# # coleta localização
-# lat = endereco_dic['lat']
-# lng = endereco_dic['lng']
-
-
-# # parâmetros de busca
-# radios = 1000
-# type = 'bar'
-# keyword = type
-
-# url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={lat}%2C{lng}&radius={radios}&type={type}&language=pt-BR&keyword={keyword}&key={api_key}"
-
-# payload = {}
-# headers = {}
-
-# response = requests.request("GET", url, headers=headers, data=payload)
-# dados = response.json()
-
-# with open('dados.json', 'w') as f:
-#     json.dump(dados, f)
