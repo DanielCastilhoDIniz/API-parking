@@ -1,7 +1,12 @@
-from flask import Flask, jsonify, request
-from flask import render_template, redirect, url_for, flash, abort
-import requests
+from flask import Flask
 import json
+from flask import render_template, redirect, url_for, flash, request, abort
+
+from forms import FormCep
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+
 
 app = Flask(__name__)
 
@@ -9,35 +14,23 @@ with open('googleMapApiKey.json', 'r') as f:
     load_key = json.loads(f.read())
 
 api_key = load_key['GOOGLE_MAPS_API_KEY']
+form_key = load_key['SECRET_KEY']
+
+app.config['SECRET_KEY'] = form_key
 
 
-@app.route('/api/places', methods=['GET'])
-def get_nearbay_places():
+@app.route('/home', methods=['GET', 'POST'])
+def home():
 
-    # Faz a consulta do CEP para obter o endereço completo
-    # cep = request.args.get('cep')
-    cep = 58051200
-    if cep:
-        cep_url = f"https://cep.awesomeapi.com.br/json/{cep}"
-        cep_response = requests.get(cep_url)
-        endereco_dic = cep_response.json()
-        lat = endereco_dic['lat']
-        lng = endereco_dic['lng'] 
+    form = FormCep()
 
-        if endereco_dic.get('error'):
-            return jsonify({'error': endereco_dic['error']}), 400
-        else:
-            # Se o CEP não foi fornecido, usa a latitude e a longitude diretamente
-            location = f"{lat},{lng}"
-# Faz a solicitação à API do Google Places para obter os locais próximos
-    url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={location}&radius=1000&type=bar&language=pt-BR&key={api_key}"
-    response = requests.get(url)
-    dados = response.json()
+    if form.validate_on_submit():
+        cep = form.cep.data
 
-    # Retorna os resultados em formato JSON
-    return render_template("home.html")
+        return render_template('home.html', cep=cep)
+
+    return render_template('home.html', form=form)
 
 
 if __name__ == '__main__':
     app.run(debug=True)
-

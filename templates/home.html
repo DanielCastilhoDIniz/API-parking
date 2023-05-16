@@ -1,62 +1,15 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends 'base.html'%}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Procurar por Perto</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+
+{% block body %}
 
 <body>
-    <div class="wrapper">
-        <div class="main">
-            <div class="header">
-                <div>
-                    <img src="" width="150" alig alt="">
-                </div>
+    <h1>Formulário CEP</h1>
+    <form method="POST" action="/">
+        {{ form.csrf_token }}
+        {{ form.cep.label }} {{ form.cep(size=30) }}
+        <br>
+        {{ form.button_submit() }}
+    </form>
 
-                <!-- Aqui vai o seu header -->
-            </div>
-            <div>
-                <nav id='menu'>
-                    <input type='checkbox' id='responsive-menu' onclick='updatemenu()'><label></label>
-                    <ul>
-                        <li><a href='home.html'>Home</a></li>
-                    </ul>
-                </nav>
-            </div>
-
-            <div class="content">
-                <div>
-                    <div>
-                        <form id="signup" action="#" method="post" autocomplete="off"
-                            onsubmit="alert('Formulário enviado!')">
-                            <fieldset style="width: 400px; height: auto">
-                                <legend>Formulário</legend>
-                                <label for="">CEP:</label> <input type="number" name="name" /> <br />
-                                <label for="">Local</label> <input type="text" name="local" /> <br />
-                                <label for="">Raio:</label> <input type="number" name="raio" min="10" />
-                                <br />
-                                <button type="submit">Consultar</button>
-                            </fieldset>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <div class="main_footer_copy">
-
-                <p class="m-b-footer"> Saúde - 2023, todos os direitos reservados.</p>
-                <p class="by"><i class="icon icon-heart-3"></i> Desenvolvido por: <a href="#"
-                        title="Daniel Castilho">Daniel Castilho</a></p>
-
-            </div>
-            <!-- Aqui vai o seu rodapé -->
-
-        </div>
-    </div>
-</body>
-
-</html>
+    {% endblock %}
